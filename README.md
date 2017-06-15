@@ -1,4 +1,4 @@
-# Hots API
+# Bookmarker API
 
 ## Getting Started
 
@@ -64,15 +64,10 @@ key.pem
 3. Create credentials for an "OAuth client ID"
 4. Add the following URLs
     * *Authorized JavaScript origins*
-        * `https://localhost:5001`
+        * `https://bookmarker.dev`
     * *Authorized Redirect URIs*
-        * `https://localhost:5001/auth/login/authorized`
-5. Go to `https://localhost:5001/auth/login` and authorize the application
-6. You should probably set yourself as admin
-
-```sql
-UPDATE users SET is_admin = true WHERE email = '<youremail@gmail.com>';
-```
+        * `https://bookmarker.dev/auth/google/callback`
+5. Go to `https://bookmarker.dev/auth/google` and authorize the application
 
 ### Running Celery
 
