@@ -12,15 +12,15 @@ services:
     env_file: ./.env
     command: ['uwsgi', '--py-autoreload', '1', '--socket', '0.0.0.0:5000', '--wsgi-file', 'autoapp.py', '--callable', 'app']
 
-  # frontend:
-  #   restart: 'always'
-  #   build: './webserver/bookmarker-frontend/'
-  #   volumes:
-  #     - ./webserver/bookmarker-frontend:/app
-  #     - /app/node_modules
-  #   expose:
-  #     - '4200'
-  #   command: ['npm', 'start']
+  frontend:
+    restart: 'always'
+    build: './webserver/bookmarker-frontend/'
+    volumes:
+      - ./webserver/bookmarker-frontend:/app
+      - /app/node_modules
+    expose:
+      - '4200'
+    command: ['npm', 'start']
 
   nginx:
     restart: 'always'
@@ -32,7 +32,7 @@ services:
     env_file: ./.env
     links:
       - web
-      # - frontend
+      - frontend
     command: nginx -g 'daemon off;'
 
   db:

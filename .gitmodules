@@ -1,3 +1,6 @@
 [submodule "webserver/hots-frontend"]
 	path = webserver/hots-frontend
 	url = git@github.com:willsoto/hots-frontend.git
+[submodule "webserver/bookmarker-frontend"]
+	path = webserver/bookmarker-frontend
+	url = git@github.com:willsoto/bookmarker-frontend.git
