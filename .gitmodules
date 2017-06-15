@@ -1,0 +1,3 @@
+[submodule "webserver/hots-frontend"]
+	path = webserver/hots-frontend
+	url = git@github.com:willsoto/hots-frontend.git

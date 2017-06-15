@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+  web:
+    restart: 'always'
+    build: .
+    links:
+      - db
+      - redis
+    volumes:
+      - .:/app
+    env_file: ./.env
+    command: ['uwsgi', '--py-autoreload', '1', '--socket', '0.0.0.0:5000', '--wsgi-file', 'autoapp.py', '--callable', 'app']
+
+  # frontend:
+  #   restart: 'always'
+  #   build: './webserver/bookmarker-frontend/'
+  #   volumes:
+  #     - ./webserver/bookmarker-frontend:/app
+  #     - /app/node_modules
+  #   expose:
+  #     - '4200'
+  #   command: ['npm', 'start']
+
+  nginx:
+    restart: 'always'
+    build: ./webserver/
+    ports:
+      - '443:443'
+    volumes:
+      - ./certificates/:/etc/ssl/
+    env_file: ./.env
+    links:
+      - web
+      # - frontend
+    command: nginx -g 'daemon off;'
+
+  db:
+    restart: 'always'
+    image: postgres:alpine
+    volumes:
+      - pg_data:/var/lib/postgresql
+    ports:
+      - '5432:5432'
+    env_file: ./.env
+
+  redis:
+    restart: 'always'
+    image: redis:alpine
+    volumes:
+      - redis_data:/var/lib/redis
+    ports:
+      - '6379:6379'
+    env_file: ./.env
+
+volumes:
+  pg_data: {}
+  redis_data: {}
