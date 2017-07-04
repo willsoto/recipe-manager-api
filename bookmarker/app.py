@@ -15,7 +15,7 @@ from .settings import ProdConfig
 from .auth.blueprint import blueprint as auth_blueprint
 
 from .bookmarks import models as bookmark_models
-from .bookmarks.api import bookmark_blueprint, tag_blueprint
+from .bookmarks.api import blueprint as bookmarks_blueprint
 
 from .users import models as user_models
 from .users.api import blueprint as users_blueprint
@@ -54,7 +54,7 @@ def register_extensions(app):
     extensions.db.init_app(app)
     extensions.login_manager.init_app(app)
     extensions.oauth.init_app(app)
-    extensions.manager.init_app(app)
+    extensions.marshmallow.init_app(app)
 
     extensions.login_manager.anonymous_user = AnonymousUser
 
@@ -64,9 +64,8 @@ def register_extensions(app):
 def register_blueprints(app):
     """Register Flask blueprints."""
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
-    app.register_blueprint(users_blueprint, url_prefix='/api/v1')
-    app.register_blueprint(bookmark_blueprint, url_prefix='/api/v1')
-    app.register_blueprint(tag_blueprint, url_prefix='/api/v1')
+    app.register_blueprint(users_blueprint, url_prefix='/api')
+    app.register_blueprint(bookmarks_blueprint, url_prefix='/api')
 
     return None
 
@@ -110,6 +109,8 @@ def setup_logging(app):
 
     flask_oauthlib_log.addHandler(logging.StreamHandler(sys.stdout))
     flask_oauthlib_log.setLevel(log_level)
+
+    app.logger.addHandler(logging.StreamHandler(sys.stdout))
 
 
 def make_celery(app=None):

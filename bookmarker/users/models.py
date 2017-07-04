@@ -20,7 +20,3 @@ class User(BaseModel, UserMixin):
 
     def get_id(self):
         return self.user_id
-
-    @property
-    def id(self):
-        return self.user_id

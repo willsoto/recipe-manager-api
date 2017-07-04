@@ -13,13 +13,10 @@ class Bookmark(BaseModel):
 
     user = db.relationship('User', back_populates='bookmarks')
 
-    tags = db.relationship('Tag', secondary='bookmark_tags', back_populates='bookmarks')
+    tags = db.relationship('Tag', secondary='bookmark_tags', back_populates='bookmarks', lazy='joined')
 
     def __str__(self):
         return '<Bookmark {} {}>'.format(self.bookmark_id, self.url)
-
-    def id(self):
-        return self.bookmark_id
 
 
 class Tag(BaseModel):
@@ -33,9 +30,6 @@ class Tag(BaseModel):
 
     def __str__(self):
         return '<Tag {} {}>'.format(self.tag_id, self.name)
-
-    def id(self):
-        return self.tag_id
 
 
 class BookmarkTag(BaseModel):

@@ -1,17 +1,22 @@
-import simplejson as json
+from flask import Blueprint
 from flask_login import current_user
 
-from ..extensions import manager
+from ..meta import BaseSchema
 
 from .models import User
 
-blueprint = manager.create_api_blueprint('user', User, methods=['GET'])
+blueprint = Blueprint('users', __name__)
 
 
-@blueprint.route('/users/me')
+class UserSchema(BaseSchema):
+
+    class Meta:
+        model = User
+
+
+user_schema = UserSchema()
+
+
+@blueprint.route('/users/me', methods=('GET',))
 def me():
-    return json.dumps({
-        'user_id': current_user.user_id,
-        'email': current_user.email,
-        'is_admin': current_user.is_admin,
-    })
+    return user_schema.jsonify(current_user)
