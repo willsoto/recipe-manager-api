@@ -19,7 +19,7 @@ services:
       - ./webserver/bookmarker-frontend:/app
       - /app/node_modules
     expose:
-      - '4200'
+      - '8080'
     command: ['npm', 'start']
 
   nginx:
