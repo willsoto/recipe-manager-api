@@ -1,8 +1,6 @@
 from flask import Blueprint, request, current_app, jsonify
-from flask_login import current_user
+from flask_login import current_user, login_required
 from marshmallow import fields
-
-from ..users.api import UserSchema
 
 from ..extensions import db
 from ..meta import BaseSchema
@@ -16,6 +14,7 @@ class TagSchema(BaseSchema):
 
     class Meta:
         model = Tag
+        exclude = ('recipes', 'created_at', 'updated_at',)
 
 tag_schema = TagSchema()
 
@@ -23,10 +22,10 @@ tag_schema = TagSchema()
 class RecipeSchema(BaseSchema):
 
     tags = fields.Nested(TagSchema, many=True, exclude=('recipes',))
-    user = fields.Nested(UserSchema, many=False, exclude=('recipes',))
 
     class Meta:
         model = Recipe
+        exclude = ('user',)
 
 
 recipe_schema = RecipeSchema()
@@ -60,6 +59,7 @@ def get_recipe(recipe_id):
 
 
 @blueprint.route('/recipes', methods=('POST',))
+@login_required
 def create_recipe():
     json_data = request.get_json()
     recipe, errors = recipe_schema.load(json_data)
@@ -68,6 +68,7 @@ def create_recipe():
         return jsonify(errors), 422
 
     current_app.logger.debug(recipe)
+    current_app.logger.debug(current_user)
 
     recipe.user = current_user
 
@@ -75,3 +76,14 @@ def create_recipe():
     db.session.commit()
 
     return recipe_schema.jsonify(recipe)
+
+
+@blueprint.route('/tags', methods=('GET',))
+def get_all_tags():
+    tags = Tag.query.all()
+
+    current_app.logger.debug(tags)
+
+    result = tag_schema.dump(tags, many=True)
+
+    return jsonify(result.data)
