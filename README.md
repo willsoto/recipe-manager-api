@@ -1,4 +1,4 @@
-# Bookmarker API
+# Recipe Manager API
 
 ## Getting Started
 
@@ -64,10 +64,10 @@ key.pem
 3. Create credentials for an "OAuth client ID"
 4. Add the following URLs
     * *Authorized JavaScript origins*
-        * `https://bookmarker.dev`
+        * `https://recipe-manager.dev`
     * *Authorized Redirect URIs*
-        * `https://bookmarker.dev/auth/google/callback`
-5. Go to `https://bookmarker.dev/auth/google` and authorize the application
+        * `https://recipe-manager.dev/auth/google/callback`
+5. Go to `https://recipe-manager.dev/auth/google` and authorize the application
 
 ### Running Celery
 
@@ -80,5 +80,5 @@ docker-compose run --rm web bash
 and then run:
 
 ```sh
-celery -A bookmarker.tasks.celery worker --loglevel=info
+celery -A recipe_manager.tasks.celery worker --loglevel=info
 ```

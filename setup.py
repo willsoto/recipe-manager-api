@@ -6,11 +6,11 @@ from setuptools import setup, find_packages
 __version__ = '0.1.0'
 
 setup(
-    name='bookmarker',
+    name='recipe_manager',
     version=__version__,
     author='Will Soto',
     author_email='will.soto9+github@gmail.com',
-    url='https://github.com/willsoto/bookmarker-api',
+    url='https://github.com/willsoto/recipe-manager-api',
     license='Apache-2.0',
     packages=find_packages(),
     include_package_data=True,

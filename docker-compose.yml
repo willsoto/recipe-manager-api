@@ -14,9 +14,9 @@ services:
 
   frontend:
     restart: 'always'
-    build: './webserver/bookmarker-frontend/'
+    build: './webserver/recipe-manager-frontend/'
     volumes:
-      - ./webserver/bookmarker-frontend:/app
+      - ./webserver/recipe-manager-frontend:/app
       - /app/node_modules
     expose:
       - '8080'

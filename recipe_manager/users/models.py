@@ -13,7 +13,7 @@ class User(BaseModel, UserMixin):
     google_token = db.Column(db.Text, nullable=False)
     is_admin = db.Column(db.Boolean, nullable=False, default=False)
 
-    bookmarks = db.relationship('Bookmark', back_populates='user')
+    recipes = db.relationship('Recipe', back_populates='user')
 
     def __str__(self):
         return '<User {} {}>'.format(self.user_id, self.email)

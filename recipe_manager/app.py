@@ -7,15 +7,15 @@ from flask import Flask
 from flask_login import AnonymousUserMixin
 from celery import Celery
 
-import bookmarker.commands as commands
-import bookmarker.extensions as extensions
+import recipe_manager.commands as commands
+import recipe_manager.extensions as extensions
 
 from .settings import ProdConfig
 
 from .auth.blueprint import blueprint as auth_blueprint
 
-from .bookmarks import models as bookmark_models
-from .bookmarks.api import blueprint as bookmarks_blueprint
+from .recipes import models as recipe_models
+from .recipes.api import blueprint as recipes_blueprint
 
 from .users import models as user_models
 from .users.api import blueprint as users_blueprint
@@ -65,7 +65,7 @@ def register_blueprints(app):
     """Register Flask blueprints."""
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
     app.register_blueprint(users_blueprint, url_prefix='/api')
-    app.register_blueprint(bookmarks_blueprint, url_prefix='/api')
+    app.register_blueprint(recipes_blueprint, url_prefix='/api')
 
     return None
 
@@ -77,9 +77,9 @@ def register_shellcontext(app):
         return {
             'db': extensions.db,
             'User': user_models.User,
-            'Bookmark': bookmark_models.Bookmark,
-            'Tag': bookmark_models.Tag,
-            'BookmarkTag': bookmark_models.BookmarkTag,
+            'Recipe': recipe_models.Recipe,
+            'Tag': recipe_models.Tag,
+            'RecipeTag': recipe_models.RecipeTag,
         }
 
     app.shell_context_processor(shell_context)

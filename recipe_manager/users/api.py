@@ -12,6 +12,7 @@ class UserSchema(BaseSchema):
 
     class Meta:
         model = User
+        exclude = ('google_token', 'created_at', 'updated_at')
 
 
 user_schema = UserSchema()
