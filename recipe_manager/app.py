@@ -80,6 +80,7 @@ def register_shellcontext(app):
             'Recipe': recipe_models.Recipe,
             'Tag': recipe_models.Tag,
             'RecipeTag': recipe_models.RecipeTag,
+            'Ingredient': recipe_models.Ingredient,
         }
 
     app.shell_context_processor(shell_context)
