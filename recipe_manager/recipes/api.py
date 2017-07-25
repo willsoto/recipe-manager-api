@@ -1,4 +1,4 @@
-from flask import Blueprint, request, current_app, jsonify
+from flask import Blueprint, request, current_app, jsonify, abort
 from flask_login import current_user, login_required
 from marshmallow import fields
 
@@ -78,9 +78,28 @@ def create_recipe():
         return jsonify(errors), 422
 
     current_app.logger.debug(recipe)
-    current_app.logger.debug(current_user)
 
     recipe.user = current_user
+
+    db.session.add(recipe)
+    db.session.commit()
+
+    return recipe_schema.jsonify(recipe)
+
+
+@blueprint.route('/recipes/<int:recipe_id>', methods=('PUT', 'PATCH',))
+@login_required
+def update_recipe(recipe_id):
+    json_data = request.get_json()
+    recipe, errors = recipe_schema.load(json_data, instance=Recipe.query.get(recipe_id))
+
+    if recipe.user != current_user:
+        return abort(403)
+
+    if errors:
+        return jsonify(errors), 422
+
+    current_app.logger.debug(recipe)
 
     db.session.add(recipe)
     db.session.commit()
