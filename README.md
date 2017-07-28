@@ -8,12 +8,12 @@
 
 ### Prerequisites
 
-Copy `./containers/.env.example` to `./containers/.env` and fill out any missing fields.
+Copy `.env.example` to `.env` and fill out any missing fields.
 
 ### Install
 
 ```sh
-docker-compose up -d
+docker-compose up -d [--build]
 ```
 
 ### Container commands
@@ -45,16 +45,7 @@ docker-compose run --rm web alembic upgrade head
 Using [pgcli](http://pgcli.com/) you can run the following (using default dev environment variables):
 
 ```sh
-pgcli --host localhost --port 5432 --user postgres hots_dev
-```
-
-### SSL certificates
-
-Follow the guide [here](https://serversforhackers.com/video/self-signed-ssl-certificates-for-development) or [here](https://certsimple.com/blog/localhost-ssl-fix) and put them into `./certificates` with the following names:
-
-```
-cert.pem
-key.pem
+pgcli --host localhost --port 5432 --user postgres recipe_manager_dev
 ```
 
 ### Logging in with Google
