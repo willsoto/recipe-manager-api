@@ -2,6 +2,12 @@
 
 ## Getting Started
 
+### Cloning
+
+```sh
+git clone --recursive git@github.com:willsoto/recipe-manager-api.git
+```
+
 ### Docker
 
 [Docker](https://www.docker.com/) is being used to manage this project, this README assumes you already have Docker installed.
