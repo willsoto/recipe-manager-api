@@ -2,6 +2,7 @@
 """The app module, containing the app factory function."""
 import sys
 import logging
+import logging.config
 
 from flask import Flask
 from flask_login import AnonymousUserMixin
@@ -99,19 +100,43 @@ def register_commands(app):
 
 
 def setup_logging(app):
-    logging.basicConfig()
-
     log_level = app.config.get('LOG_LEVEL', logging.DEBUG)
-    flask_oauthlib_log = logging.getLogger('flask_oauthlib')
 
-    log.setLevel(log_level)
-
-    logging.getLogger('sqlalchemy.engine').setLevel(log_level)
-
-    flask_oauthlib_log.addHandler(logging.StreamHandler(sys.stdout))
-    flask_oauthlib_log.setLevel(log_level)
-
-    app.logger.addHandler(logging.StreamHandler(sys.stdout))
+    logging.config.dictConfig({
+        'version': 1,
+        'disable_existing_loggers': False,
+        'loggers': {
+            'sqlalchemy.engine': {
+                'level': logging.INFO,
+                'handlers': ['sql']
+            },
+            'flask_oauthlib': {
+                'level': log_level,
+                'handlers': ['default']
+            }
+        },
+        'handlers': {
+            'default': {
+                'level': log_level,
+                'formatter': 'standard',
+                'class': 'logging.StreamHandler',
+            },
+            'sql': {
+                'level': logging.INFO,
+                'formatter': 'sql',
+                'class': 'logging.StreamHandler',
+            }
+        },
+        'formatters': {
+            'standard': {
+                'format': '%(levelname)s %(message)s',
+            },
+            'sql': {
+                'format': '[%(levelname)s] %(message)s',
+                'class': 'recipe_manager.utils.SQLAlchemyFormatter'
+            },
+        }
+    })
 
 
 def make_celery(app=None):

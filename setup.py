@@ -40,6 +40,7 @@ setup(
         'redis',
         'simplejson',
         'SQLAlchemy',
+        'sqlparse',
         'uwsgi',
         'Werkzeug',
     ],
