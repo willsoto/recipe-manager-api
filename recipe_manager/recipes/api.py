@@ -5,7 +5,7 @@ from marshmallow import fields
 from ..extensions import db
 from ..meta import BaseSchema
 
-from .models import Recipe, Tag, Ingredient, UNITS
+from .models import Recipe, Tag, Ingredient, Instruction, INGREDIENT_UNITS
 
 blueprint = Blueprint('recipes', __name__)
 
@@ -28,10 +28,20 @@ class IngredientSchema(BaseSchema):
 ingredient_schema = IngredientSchema()
 
 
+class InstructionSchema(BaseSchema):
+
+    class Meta:
+        model = Instruction
+        exclude = ('recipes', 'created_at', 'updated_at',)
+
+ingredient_schema = InstructionSchema()
+
+
 class RecipeSchema(BaseSchema):
 
     tags = fields.Nested(TagSchema, many=True, exclude=('recipes',))
     ingredients = fields.Nested(IngredientSchema, many=True, exclude=('recipes',))
+    instructions = fields.Nested(InstructionSchema, many=True, exclude=('recipes',))
 
     class Meta:
         model = Recipe
@@ -120,4 +130,4 @@ def get_all_tags():
 
 @blueprint.route('/ingredients/units')
 def get_all_ingredient_units():
-    return jsonify(UNITS)
+    return jsonify(INGREDIENT_UNITS)

@@ -3,7 +3,16 @@ from sqlalchemy.dialects.postgresql import ENUM
 from ..extensions import db
 from ..meta import BaseModel
 
-UNITS = ('ounces', 'tablespoon', 'teaspoon',)
+INGREDIENT_UNITS = (
+    '',  # we allow an empty string here for unitless ingredients
+    'ounce',
+    'tablespoon',
+    'teaspoon',
+    'cup',
+    'pound',
+    'drop',
+    'dash',
+)
 
 
 class Recipe(BaseModel):
@@ -17,7 +26,7 @@ class Recipe(BaseModel):
     user = db.relationship('User', back_populates='recipes')
 
     ingredients = db.relationship('Ingredient', back_populates='recipes', lazy='joined')
-
+    instructions = db.relationship('Instruction', back_populates='recipes', lazy='joined')
     tags = db.relationship('Tag', secondary='recipe_tags', back_populates='recipes', lazy='joined')
 
     def __str__(self):
@@ -55,10 +64,26 @@ class Ingredient(BaseModel):
     ingredient_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text, nullable=False)
     quanity = db.Column(db.Float(precision=2), nullable=False)
-    unit = db.Column('unit', ENUM(*UNITS, name='ingredient_unit'))
+    unit = db.Column('unit', ENUM(*INGREDIENT_UNITS, name='ingredient_unit'), nullable=False, default='""')
 
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipes.recipe_id'), nullable=False)
     recipes = db.relationship('Recipe', back_populates='ingredients', lazy='joined')
 
     def __str__(self):
         return '<Ingredient {} {}>'.format(self.ingredient_id, self.name)
+
+
+class Instruction(BaseModel):
+
+    __tablename__ = 'instructions'
+
+    instruction_id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.Text, nullable=False)
+    time = db.Column(db.Integer)
+    duration = db.Column('duration', ENUM('minutes', 'hours', name='instruction_duration'))
+
+    recipe_id = db.Column(db.Integer, db.ForeignKey('recipes.recipe_id'), nullable=False)
+    recipes = db.relationship('Recipe', back_populates='instructions', lazy='joined')
+
+    def __str__(self):
+        return '<Instruction {} {}{}>'.format(self.instruction_id, self.time, self.duration)
