@@ -42,8 +42,8 @@ class SQLAlchemyFormatter(logging.Formatter):
                 lexer = PythonLexer()
             else:
                 lexer = SqlLexer()
-            message = pygments.highlight(
-                sqlparse.format(
-                    message, reindent=True), lexer, Terminal256Formatter()).rstrip()
+                message = sqlparse.format(message, reindent=True, keyword_case='upper')
+
+            message = pygments.highlight(message, lexer, Terminal256Formatter()).rstrip()
 
         return message
