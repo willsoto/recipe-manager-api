@@ -64,5 +64,7 @@ target/
 # OSX
 .DS_Store
 
-# Docker
+# Docker / Kubernetes
 /.env
+/.env.prod
+/gcr.json
