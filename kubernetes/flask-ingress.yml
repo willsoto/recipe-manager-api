@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: recipe-manager-ingress
+spec:
+  rules:
+  - host: recipe-manager.com
+    http:
+      paths:
+      - path: /api/*
+        backend:
+          serviceName: recipe-manager-api
+          servicePort: 5000

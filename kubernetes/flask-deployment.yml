@@ -1,0 +1,57 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: recipe-manager-api
+  labels:
+    app: recipe-manager
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: recipe-manager
+        tier: backend
+    spec:
+      containers:
+      - name: recipe-manager-api
+        image: 'us.gcr.io/recipe-manager-175123/recipe-manager-api:latest'
+        args:
+        - uwsgi
+        - --ini
+        - uwsgi.ini
+        env:
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: production
+              key: SECRET_KEY
+        - name: SQLALCHEMY_DATABASE_URI
+          valueFrom:
+            secretKeyRef:
+              name: production
+              key: SQLALCHEMY_DATABASE_URI
+        - name: GOOGLE_CONSUMER_KEY
+          valueFrom:
+            secretKeyRef:
+              name: production
+              key: GOOGLE_CONSUMER_KEY
+        - name: GOOGLE_CONSUMER_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: production
+              key: GOOGLE_CONSUMER_SECRET
+        - name: FLASK_APP
+          valueFrom:
+            secretKeyRef:
+              name: production
+              key: FLASK_APP
+        - name: FLASK_DEBUG
+          valueFrom:
+            secretKeyRef:
+              name: production
+              key: FLASK_DEBUG
+        ports:
+        - containerPort: 5000
+          name: uwsgi
