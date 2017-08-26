@@ -21,6 +21,8 @@ spec:
         - uwsgi
         - --ini
         - uwsgi.ini
+        - --http
+        - :5000
         env:
         - name: SECRET_KEY
           valueFrom:

@@ -10,7 +10,7 @@ services:
     volumes:
       - .:/app
     env_file: ./.env
-    command: ['uwsgi', '--ini', 'uwsgi.ini']
+    command: ['uwsgi', '--ini', 'uwsgi.ini', '--socket', ':5000']
 
   frontend:
     restart: 'always'
