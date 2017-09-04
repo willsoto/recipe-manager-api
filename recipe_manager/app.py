@@ -5,6 +5,7 @@ import logging.config
 
 from flask import Flask
 from flask_login import AnonymousUserMixin
+from flask_graphql import GraphQLView
 from celery import Celery
 
 import recipe_manager.commands as commands
@@ -44,6 +45,7 @@ def create_app(config_object=ProdConfig):
     register_blueprints(app)
     register_shellcontext(app)
     register_commands(app)
+    register_graphql(app)
 
     return app
 
@@ -67,6 +69,15 @@ def register_blueprints(app):
     app.register_blueprint(users_blueprint, url_prefix='/api')
     app.register_blueprint(recipes_blueprint, url_prefix='/api')
 
+    return None
+
+
+def register_graphql(app):
+    """Register GraphQL"""
+    from recipe_manager.schema import schema
+
+    app.add_url_rule('/api/graphql', view_func=GraphQLView.as_view('graphql', schema=schema, graphiql=True))
+    # app.add_url_rule('/graphql/batch', view_func=GraphQLView.as_view('graphql', schema=schema, batch=True))
     return None
 
 
