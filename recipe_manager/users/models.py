@@ -1,14 +1,14 @@
 from flask_login import UserMixin
 
 from ..extensions import db
-from ..meta import BaseModel
+from ..meta import BaseModel, primary_key
 
 
 class User(BaseModel, UserMixin):
 
     __tablename__ = 'users'
 
-    user_id = db.Column(db.Integer, primary_key=True)
+    user_id = primary_key()
     email = db.Column(db.Text, nullable=False)
     google_token = db.Column(db.Text, nullable=False)
     is_admin = db.Column(db.Boolean, nullable=False, default=False)

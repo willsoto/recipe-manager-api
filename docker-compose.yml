@@ -37,7 +37,7 @@ services:
 
   db:
     restart: 'always'
-    image: postgres:alpine
+    build: ./db/
     volumes:
       - pg_data:/var/lib/postgresql
     ports:
