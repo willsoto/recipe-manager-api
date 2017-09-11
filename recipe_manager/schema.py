@@ -2,6 +2,8 @@ import graphene
 from graphene import relay
 from flask_login import current_user
 
+from recipe_manager.mutations import Mutation
+
 from .recipes.schema import RecipeSchema, TagSchema, IngredientSchema, InstructionSchema
 from .users.schema import UserSchema
 
@@ -14,20 +16,19 @@ class Query(graphene.ObjectType):
     instructions = graphene.List(InstructionSchema)
     current_user = graphene.Field(UserSchema)
 
-    def resolve_recipes(self, args, context, info):
+    def resolve_recipes(self, info):
         query = RecipeSchema.get_query(info)
 
         return query.all()
 
-    def resolve_current_user(self, args, context, info):
-        query = UserSchema.get_query({
-            'user_id': current_user.user_id
-        })
+    def resolve_current_user(self, info):
+        query = UserSchema.get_query(info).filter_by(user_id=current_user.user_id)
 
         return query.first()
 
 schema = graphene.Schema(
     query=Query,
+    mutation=Mutation,
     auto_camelcase=False,
     types=[
         UserSchema,

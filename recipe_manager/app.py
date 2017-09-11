@@ -75,8 +75,16 @@ def register_blueprints(app):
 def register_graphql(app):
     """Register GraphQL"""
     from recipe_manager.schema import schema
+    from recipe_manager.extensions import db
 
-    app.add_url_rule('/api/graphql', view_func=GraphQLView.as_view('graphql', schema=schema, graphiql=True))
+    app.add_url_rule(
+        '/api/graphql',
+        view_func=GraphQLView.as_view(
+            'graphql',
+            schema=schema,
+            graphiql=True,
+            context={
+                'session': db.session}))
     # app.add_url_rule('/graphql/batch', view_func=GraphQLView.as_view('graphql', schema=schema, batch=True))
     return None
 
