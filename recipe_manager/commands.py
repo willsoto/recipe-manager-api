@@ -2,11 +2,10 @@
 """Click commands."""
 import os
 from glob import glob
-from subprocess import call
 from operator import attrgetter
+from subprocess import call
 
 import click
-
 from flask.cli import with_appcontext
 from flask_script import prompt_bool
 
@@ -26,16 +25,20 @@ def test():
 
 
 @click.command()
-@click.option('-f', '--fix-imports', default=False, is_flag=True,
-              help='Fix imports using isort, before linting')
+@click.option(
+    '-f', '--fix-imports', default=False, is_flag=True,
+    help='Fix imports using isort, before linting',
+)
 def lint(fix_imports):
     """Lint and check code style with flake8 and isort."""
     skip = ['requirements']
     root_files = glob('*.py')
     root_directories = [
-        name for name in next(os.walk('.'))[1] if not name.startswith('.')]
+        name for name in next(os.walk('.'))[1] if not name.startswith('.')
+    ]
     files_and_directories = [
-        arg for arg in root_files + root_directories if arg not in skip]
+        arg for arg in root_files + root_directories if arg not in skip
+    ]
 
     def execute_tool(description, *args):
         """Execute a checking tool with its arguments."""

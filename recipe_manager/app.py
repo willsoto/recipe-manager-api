@@ -3,21 +3,17 @@
 import logging
 import logging.config
 
-from flask import Flask
-from flask_login import AnonymousUserMixin
-from flask_graphql import GraphQLView
-from celery import Celery
-
 import recipe_manager.commands as commands
 import recipe_manager.extensions as extensions
-
-from .settings import ProdConfig
+from celery import Celery
+from flask import Flask
+from flask_graphql import GraphQLView
+from flask_login import AnonymousUserMixin
 
 from .auth.blueprint import blueprint as auth_blueprint
-
 from .recipes import models as recipe_models
 from .recipes.api import blueprint as recipes_blueprint
-
+from .settings import ProdConfig
 from .users import models as user_models
 from .users.api import blueprint as users_blueprint
 
@@ -84,7 +80,10 @@ def register_graphql(app):
             schema=schema,
             graphiql=True,
             context={
-                'session': db.session}))
+                'session': db.session,
+            },
+        ),
+    )
     # app.add_url_rule('/graphql/batch', view_func=GraphQLView.as_view('graphql', schema=schema, batch=True))
     return None
 
@@ -126,12 +125,12 @@ def setup_logging(app):
         'loggers': {
             'sqlalchemy.engine': {
                 'level': logging.INFO,
-                'handlers': ['sql']
+                'handlers': ['sql'],
             },
             'flask_oauthlib': {
                 'level': log_level,
-                'handlers': ['default']
-            }
+                'handlers': ['default'],
+            },
         },
         'handlers': {
             'default': {
@@ -143,7 +142,7 @@ def setup_logging(app):
                 'level': logging.INFO,
                 'formatter': 'sql',
                 'class': 'logging.StreamHandler',
-            }
+            },
         },
         'formatters': {
             'standard': {
@@ -151,9 +150,9 @@ def setup_logging(app):
             },
             'sql': {
                 'format': '[%(levelname)s] %(message)s',
-                'class': 'recipe_manager.utils.SQLAlchemyFormatter'
+                'class': 'recipe_manager.utils.SQLAlchemyFormatter',
             },
-        }
+        },
     })
 
 
@@ -163,7 +162,8 @@ def make_celery(app=None):
     celery = Celery(
         app.import_name,
         backend=app.config['CELERY_BACKEND'],
-        broker=app.config['CELERY_BROKER_URL'])
+        broker=app.config['CELERY_BROKER_URL'],
+    )
 
     celery.conf.update(app.config)
     TaskBase = celery.Task

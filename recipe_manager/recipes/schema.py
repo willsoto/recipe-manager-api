@@ -1,6 +1,6 @@
 from graphene_sqlalchemy import SQLAlchemyObjectType
 
-from .models import Recipe, Tag, Ingredient, Instruction
+from .models import Ingredient, Instruction, Recipe, Tag
 
 
 class RecipeSchema(SQLAlchemyObjectType):

@@ -1,7 +1,7 @@
-from flask import Blueprint, session, redirect, url_for, jsonify, request
-from flask_login import login_user, login_required, logout_user
+from flask import Blueprint, jsonify, redirect, request, session, url_for
+from flask_login import login_required, login_user, logout_user
 
-from ..extensions import oauth, db, login_manager
+from ..extensions import db, login_manager, oauth
 from ..users.models import User
 
 blueprint = Blueprint('auth_blueprint', __name__)
@@ -10,14 +10,14 @@ blueprint = Blueprint('auth_blueprint', __name__)
 google = oauth.remote_app(
     'google',
     request_token_params={
-        'scope': 'email'
+        'scope': 'email',
     },
     base_url='https://www.googleapis.com/oauth2/v1/',
     request_token_url=None,
     access_token_method='POST',
     access_token_url='https://accounts.google.com/o/oauth2/token',
     authorize_url='https://accounts.google.com/o/oauth2/auth',
-    app_key='GOOGLE'
+    app_key='GOOGLE',
 )
 
 
@@ -56,7 +56,7 @@ def authorized():
     if resp is None:
         return 'Access denied: reason=%s error=%s' % (
             request.args['error_reason'],
-            request.args['error_description']
+            request.args['error_description'],
         )
 
     google_token = resp['access_token']

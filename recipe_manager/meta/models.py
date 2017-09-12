@@ -9,11 +9,13 @@ class TimestampMixin(object):
     created_at = db.Column(db.DateTime(timezone=True), server_default=db.func.now(), default=utcnow)
     updated_at = db.Column(
         db.DateTime(
-            timezone=True),
+            timezone=True,
+        ),
         server_default=db.func.now(),
         server_onupdate=db.func.now(),
         default=utcnow,
-        onupdate=utcnow)
+        onupdate=utcnow,
+    )
 
 
 class BaseModel(TimestampMixin, db.Model):

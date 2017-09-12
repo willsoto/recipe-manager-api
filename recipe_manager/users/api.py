@@ -2,7 +2,6 @@ from flask import Blueprint
 from flask_login import current_user
 
 from ..meta import BaseSchema
-
 from .models import User
 
 blueprint = Blueprint('users', __name__)

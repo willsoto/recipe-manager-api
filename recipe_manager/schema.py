@@ -1,10 +1,9 @@
 import graphene
-from graphene import relay
 from flask_login import current_user
-
+from graphene import relay
 from recipe_manager.mutations import Mutation
 
-from .recipes.schema import RecipeSchema, TagSchema, IngredientSchema, InstructionSchema
+from .recipes.schema import IngredientSchema, InstructionSchema, RecipeSchema, TagSchema
 from .users.schema import UserSchema
 
 
@@ -26,6 +25,7 @@ class Query(graphene.ObjectType):
 
         return query.first()
 
+
 schema = graphene.Schema(
     query=Query,
     mutation=Mutation,
@@ -35,4 +35,6 @@ schema = graphene.Schema(
         RecipeSchema,
         TagSchema,
         IngredientSchema,
-        InstructionSchema])
+        InstructionSchema,
+    ],
+)

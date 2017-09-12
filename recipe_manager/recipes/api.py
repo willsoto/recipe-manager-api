@@ -1,11 +1,10 @@
-from flask import Blueprint, request, current_app, jsonify, abort
+from flask import Blueprint, abort, current_app, jsonify, request
 from flask_login import current_user, login_required
 from marshmallow import fields
 
 from ..extensions import db
 from ..meta import BaseSchema
-
-from .models import Recipe, Tag, Ingredient, Instruction, INGREDIENT_UNITS
+from .models import INGREDIENT_UNITS, Ingredient, Instruction, Recipe, Tag
 
 blueprint = Blueprint('recipes', __name__)
 
@@ -16,6 +15,7 @@ class TagSchema(BaseSchema):
         model = Tag
         exclude = ('recipes', 'created_at', 'updated_at',)
 
+
 tag_schema = TagSchema()
 
 
@@ -25,6 +25,7 @@ class IngredientSchema(BaseSchema):
         model = Ingredient
         exclude = ('recipes', 'created_at', 'updated_at',)
 
+
 ingredient_schema = IngredientSchema()
 
 
@@ -33,6 +34,7 @@ class InstructionSchema(BaseSchema):
     class Meta:
         model = Instruction
         exclude = ('recipes', 'created_at', 'updated_at',)
+
 
 ingredient_schema = InstructionSchema()
 
@@ -68,7 +70,7 @@ def get_recipe(recipe_id):
 
     if recipe is None:
         return jsonify({
-            'message': 'Recipe not found'
+            'message': 'Recipe not found',
         }), 404
 
     current_app.logger.debug(recipe)

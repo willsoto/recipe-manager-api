@@ -3,7 +3,6 @@ from flask import abort
 from flask_login import current_user
 
 from ..extensions import db
-
 from .models import Recipe
 from .schema import RecipeSchema
 

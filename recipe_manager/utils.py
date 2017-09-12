@@ -1,13 +1,12 @@
-import pytz
 import logging
-
 from contextlib import contextmanager
 from datetime import datetime
 
-import sqlparse
 import pygments
-from pygments.lexers import SqlLexer, PythonLexer
+import pytz
+import sqlparse
 from pygments.formatters import Terminal256Formatter
+from pygments.lexers import PythonLexer, SqlLexer
 
 
 def utcnow():
