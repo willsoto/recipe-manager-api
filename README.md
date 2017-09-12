@@ -8,6 +8,11 @@
 git clone --recursive git@github.com:willsoto/recipe-manager-api.git
 ```
 
+### Pre-commit Hooks
+
+We use [pre-commit](http://pre-commit.com/) for our pre-commit hooks.
+Please follow the [installation instructions](http://pre-commit.com/#install) for getting started.
+
 ### Docker
 
 [Docker](https://www.docker.com/) is being used to manage this project, this README assumes you already have Docker installed.
