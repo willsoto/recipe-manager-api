@@ -64,7 +64,7 @@ def get_all_recipes():
     return jsonify(result.data)
 
 
-@blueprint.route('/recipes/<int:recipe_id>')
+@blueprint.route('/recipes/<recipe_id>')
 def get_recipe(recipe_id):
     recipe = Recipe.query.get(recipe_id)
 
@@ -99,7 +99,7 @@ def create_recipe():
     return recipe_schema.jsonify(recipe)
 
 
-@blueprint.route('/recipes/<int:recipe_id>', methods=('PUT', 'PATCH',))
+@blueprint.route('/recipes/<recipe_id>', methods=('PUT', 'PATCH',))
 @login_required
 def update_recipe(recipe_id):
     json_data = request.get_json()
